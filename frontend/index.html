@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cervical Fracture AI Detection</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for clinical icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Pink/Spine Decorative elements -->
+        <div class="glow-backdrop"></div>
+        <div class="spine-backdrop">
+            <!-- Spine segment illustrations in soft pink -->
+            <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg" class="spine-illustration">
+                <path d="M50 10 C35 15, 30 25, 50 35 C70 25, 65 15, 50 10 Z" fill="none" stroke="rgba(236, 72, 153, 0.22)" stroke-width="2.5"/>
+                <path d="M50 32 C33 37, 28 47, 50 57 C72 47, 67 37, 50 32 Z" fill="none" stroke="rgba(236, 72, 153, 0.18)" stroke-width="2.5"/>
+                <path d="M50 54 C31 59, 26 69, 50 79 C74 69, 69 59, 50 54 Z" fill="none" stroke="rgba(236, 72, 153, 0.15)" stroke-width="2.5"/>
+                <path d="M50 76 C29 81, 24 91, 50 101 C76 91, 71 81, 50 76 Z" fill="none" stroke="rgba(236, 72, 153, 0.12)" stroke-width="2.5"/>
+                <path d="M50 98 C27 103, 22 113, 50 123 C78 113, 73 103, 50 98 Z" fill="none" stroke="rgba(236, 72, 153, 0.08)" stroke-width="2.5"/>
+                <path d="M50 120 C25 125, 20 135, 50 145 C80 135, 75 125, 50 120 Z" fill="none" stroke="rgba(236, 72, 153, 0.05)" stroke-width="2.5"/>
+            </svg>
+        </div>
+
+        <!-- Premium Header Area -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="brand-title">
+                    <svg class="brand-icon-svg" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2 C10 6 8 12 16 16 C24 12 22 6 16 2 Z" fill="none" stroke="url(#pink-grad)" stroke-width="2.5"/>
+                        <path d="M16 14 C11 17 9 22 16 25 C23 22 21 17 16 14 Z" fill="none" stroke="url(#pink-grad)" stroke-width="2.5"/>
+                        <circle cx="16" cy="9" r="2" fill="#ec4899"/>
+                        <circle cx="16" cy="20" r="2" fill="#8b5cf6"/>
+                        <defs>
+                            <linearGradient id="pink-grad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#ec4899"/>
+                                <stop offset="100%" stop-color="#8b5cf6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <h1>Cervical Fracture <span class="brand-highlight">AI</span></h1>
+                </div>
+                <p class="brand-description">AI-powered learning assistant for rapid triage & cervical spine fracture screening</p>
+                
+                <div class="status-badges-row">
+                    <div class="status-pill status-online">
+                        <span class="status-dot"></span>
+                        <span>System Online</span>
+                    </div>
+                    <div class="status-pill status-ready">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Model Ready</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </header>
+
+        <!-- Main Workspace split -->
+        <main class="dashboard-workspace">
+            
+            <!-- Left Card: Upload Scan -->
+            <section class="workspace-card upload-section">
+                <div class="card-header">
+                    <div class="header-title-group">
+                        <div class="icon-square upload-icon-square">
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                        </div>
+                        <h2>Upload Scan</h2>
+                    </div>
+                    <span class="card-sub-info">Supports PNG, JPG, JPEG, BMP</span>
+                </div>
+
+                <!-- Drag & Drop Zone -->
+                <div class="drag-drop-zone" id="drop-zone">
+                    <input type="file" id="file-input" accept="image/*" class="hidden-file-input">
+                    
+                    <!-- Prompt (Visible by default) -->
+                    <div class="drop-prompt" id="drop-prompt">
+                        <i class="fa-regular fa-image upload-large-icon"></i>
+                        <p class="primary-prompt-text">Drag and drop cervical spine scan here</p>
+                        <p class="secondary-prompt-text">or <span class="browse-link">browse files</span></p>
+                    </div>
+
+                    <!-- Selected Image Preview -->
+                    <div class="preview-container hidden" id="preview-container">
+                        <div class="image-frame">
+                            <img id="image-preview" src="#" alt="Cervical Spine Preview">
+                            <button class="btn-clear-image" id="remove-btn" title="Remove image">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="file-details-bar">
+                            <span class="file-name" id="file-name-text">CT Scan Sample.png</span>
+                            <div class="file-size-badge">
+                                <span id="file-size-text">512 KB</span>
+                                <i class="fa-solid fa-circle-check check-ok-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-analyze-gradient" id="analyze-btn" disabled>
+                    <span>Analyze Scan</span>
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </button>
+
+                <div class="security-disclaimer">
+                    <i class="fa-solid fa-shield-halved shield-icon"></i>
+                    <span>Your data is secure and processed locally.</span>
+                </div>
+            </section>
+
+            <!-- Right Card: Diagnostics Results -->
+            <section class="workspace-card results-section">
+                <div class="card-header">
+                    <div class="header-title-group">
+                        <div class="icon-square results-icon-square">
+                            <i class="fa-solid fa-chart-simple"></i>
+                        </div>
+                        <h2>Diagnostics Results</h2>
+                    </div>
+                </div>
+
+                <!-- Empty State (Before analysis) -->
+                <div class="results-placeholder" id="results-placeholder">
+                    <i class="fa-solid fa-brain-circuit brain-icon"></i>
+                    <p>Load and analyze an image to view diagnostic outputs</p>
+                </div>
+
+                <!-- Loading Spinner State -->
+                <div class="loading-state hidden" id="loading-state">
+                    <div class="spinner"></div>
+                    <p>Processing image and running neural network inference...</p>
+                </div>
+
+                <!-- Analysis Outcomes Render (Active State) -->
+                <div class="results-display hidden" id="results-display">
+                    
+                    <!-- Outcome Overview Alert Box -->
+                    <div class="outcome-alert-card" id="diagnostic-card">
+                        <div class="outcome-card-top">
+                            <span class="outcome-card-label">DIAGNOSTIC OUTCOME</span>
+                            <span class="badge-outcome-pill" id="result-badge">NO FRACTURE</span>
+                        </div>
+                        <div class="outcome-card-body">
+                            <div class="outcome-card-icon-wrapper">
+                                <i class="fa-solid fa-shield-halved" id="outcome-main-icon"></i>
+                            </div>
+                            <div class="outcome-card-text">
+                                <h3 id="result-text">No Fracture Detected</h3>
+                                <p id="diagnostic-desc">No fracture pattern was detected by the neural network (Confidence: 91.2%). The cervical vertebrae appear structurally intact based on the scan features.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- YOLO Bounding Box Localization Viewport (Only loaded if Fracture) -->
+                    <div class="yolo-visualization-card hidden" id="yolo-result-container">
+                        <div class="yolo-title-row">
+                            <h4>Suspected Fracture Location (YOLO Localized)</h4>
+                            <div class="yolo-controls">
+                                <button class="yolo-btn" id="btn-zoom-in" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
+                                <button class="yolo-btn" id="btn-zoom-out" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
+                                <button class="yolo-btn" id="btn-zoom-reset" title="Reset Zoom"><i class="fa-solid fa-arrows-rotate"></i></button>
+                                <button class="yolo-btn" id="btn-fullscreen" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+                                <button class="yolo-btn download-btn" id="btn-download" title="Download Bounding Box Image"><i class="fa-solid fa-download"></i></button>
+                            </div>
+                        </div>
+                        <div class="yolo-viewport" id="viewer-viewport">
+                            <img id="annotated-image-preview" src="#" alt="Suspected Fracture Box Annotation" class="yolo-img">
+                        </div>
+                    </div>
+
+                    <!-- Classification Confidence Metrics -->
+                    <div class="confidence-metrics-box">
+                        <h4 class="metrics-block-title">CLASSIFICATION CONFIDENCE</h4>
+                        
+                        <!-- Fracture progress row -->
+                        <div class="metric-progress-item">
+                            <div class="metric-info-row">
+                                <span class="metric-name-group">
+                                    <i class="fa-solid fa-triangle-exclamation icon-alert-red"></i>
+                                    <span>Fracture</span>
+                                </span>
+                                <span class="metric-pct-val" id="fracture-val">8.8%</span>
+                            </div>
+                            <div class="progress-bar-track">
+                                <div class="progress-bar-fill fill-red" id="fracture-bar" style="width: 8.8%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Healthy progress row -->
+                        <div class="metric-progress-item">
+                            <div class="metric-info-row">
+                                <span class="metric-name-group">
+                                    <i class="fa-solid fa-shield-halved icon-healthy-green"></i>
+                                    <span>No Fracture (Healthy)</span>
+                                </span>
+                                <span class="metric-pct-val" id="no-fracture-val">91.2%</span>
+                            </div>
+                            <div class="progress-bar-track">
+                                <div class="progress-bar-fill fill-green" id="no-fracture-bar" style="width: 91.2%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clinical Disclaimer Box -->
+                    <div class="clinical-disclaimer-card">
+                        <i class="fa-solid fa-circle-info info-icon"></i>
+                        <p class="disclaimer-text"><strong>Clinical Disclaimer:</strong> This tool is an AI prototype for educational and research purposes only. It is not FDA approved for diagnostic use. All findings must be verified by a board-certified radiologist.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>CervicalFractureAI Project &copy; 2026. Built with PyTorch & FastAPI.</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
